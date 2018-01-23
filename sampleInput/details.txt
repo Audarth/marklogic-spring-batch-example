@@ -1,0 +1,3 @@
+Detail text
+
+Detail body
