@@ -38,33 +38,45 @@ dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     compile 'com.marklogic:marklogic-spring-batch-core:1.5.0'
     compile 'com.marklogic:spring-batch-file:1.5.0'
+
+    compile group: 'org.apache.avro', name: 'avro', version: '1.8.2'
     testCompile 'com.marklogic:marklogic-spring-batch-test:1.5.0'
     testCompile "com.marklogic:ml-junit:3.1.0"
 }
 
 // Define the main class for the application
-mainClassName = 'com.marklogic.spring.batch.core.launch.support.CommandLineJobRunner'  
+mainClassName = 'com.marklogic.spring.batch.core.launch.support.CommandLineJobRunner'
 
 task runYourJob(type: JavaExec) {
     main = 'com.marklogic.spring.batch.core.launch.support.CommandLineJobRunner'
     classpath = sourceSets.test.runtimeClasspath
     args = ["--job_path", "YourJobConfig",
-        "--job_id", "yourJob",
-        "--output_collections", "yourJob",
-        "--chunk_size", "50",
-        "--thread_count", "1",
-        "--next"]
+            "--job_id", "yourJob",
+            "--output_collections", "yourJob",
+            "--chunk_size", "50",
+            "--thread_count", "1",
+            "--next"]
 }
- 
- 
+
+
 
 task runMyDirectoryJob(type: JavaExec) {
     main = 'com.marklogic.spring.batch.core.launch.support.CommandLineJobRunner'
     classpath = sourceSets.test.runtimeClasspath
     args = ["--job_path", "MyImportDocsExtractTextJob",
-        "--job_id", "mydirectoryJob",
-        "--input_file_path", "sampleInput/",
-        "--input_file_pattern", "\".*\"",
-        "--thread_count", "1",
-        "--next"]
+            "--job_id", "mydirectoryJob",
+            "--input_file_path", "sampleInput/",
+            "--input_file_pattern", "\".*\"",
+            "--thread_count", "1",
+            "--next"]
+}
+
+task runAvroJob(type: JavaExec) {
+    main = 'com.marklogic.spring.batch.core.launch.support.CommandLineJobRunner'
+    classpath = sourceSets.test.runtimeClasspath
+    args = ["--job_path", "AvroReadJob",
+            "--job_id", "myAvroJob",
+            "--input_file", "sampleAvroInput/sampleAvroSerialized.avro",
+            "--thread_count", "1",
+            "--next"]
 }

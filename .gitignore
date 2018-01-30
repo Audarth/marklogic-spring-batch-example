@@ -1,3 +1,15 @@
-.gradle/
-build/
 .nb-gradle/
+bin/
+build/
+classes/
+out/
+.classpath
+.project
+.gradle
+.settings
+.idea/
+*.iml
+*.ipr
+*.iws
+marklogic-spring-batch.sublime*
+output-*.xml
