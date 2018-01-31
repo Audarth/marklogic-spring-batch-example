@@ -41,7 +41,7 @@ import java.util.UUID;
         com.marklogic.spring.batch.config.MarkLogicBatchConfiguration.class,
         com.marklogic.spring.batch.config.MarkLogicConfiguration.class})
 @PropertySource("classpath:job.properties")
-public class AvroReadJob {
+public class AvroImportJob {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -61,7 +61,7 @@ public class AvroReadJob {
     @Bean(name = JOB_NAME)
     public Job job(
             JobBuilderFactory jobBuilderFactory,
-            @Qualifier("loadDocumentsFromDirectoryJobStep1") Step step) {
+            @Qualifier("loadFromAvroFileStep1") Step step) {
 
         JobExecutionListener listener = new JobExecutionListener() {
             @Override
@@ -84,7 +84,7 @@ public class AvroReadJob {
 
     @Bean
     @JobScope
-    public Step loadDocumentsFromDirectoryJobStep1(
+    public Step loadFromAvroFileStep1(
             StepBuilderFactory stepBuilderFactory,
             DatabaseClientProvider databaseClientProvider,
             @Value("#{jobParameters['output_collections'] ?: 'avro'}") String[] collections,
