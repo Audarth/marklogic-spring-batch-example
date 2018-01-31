@@ -7,6 +7,7 @@ import com.marklogic.client.io.marker.AbstractWriteHandle;
 import com.marklogic.client.io.marker.DocumentMetadataWriteHandle;
 import com.marklogic.spring.batch.item.processor.MarkLogicItemProcessor;
 import com.marklogic.spring.batch.item.writer.MarkLogicItemWriter;
+import item.file.AvroItemReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
@@ -90,29 +91,9 @@ public class AvroReadJob {
             @Value("#{jobParameters['input_file']}") String input_file) throws IOException {
 
 
-        ItemReader<String> reader = new ItemReader<String>() {
+        File avroFile = new File(input_file);
 
-
-            //initialize
-            File avroFile = new File(input_file);
-            DatumReader<GenericRecord> datumReader = new GenericDatumReader<>();
-            DataFileReader<GenericRecord> dataFileReader = new DataFileReader<GenericRecord>(avroFile, datumReader);
-
-            GenericRecord record = null;
-
-            @Override
-            public String read() throws Exception {
-
-                if (dataFileReader.hasNext()) {
-                    record = dataFileReader.next(record);
-                    //System.out.println(record);
-                    return record.toString();
-                } else {
-                    return null;
-                }
-
-            }
-        };
+        ItemReader<String> reader = new AvroItemReader(avroFile);
 
         //The ItemProcessor is typically customized for your Job.  An anoymous class is a nice way to instantiate but
         //if it is a reusable component instantiate in its own class
